@@ -19,7 +19,7 @@
         
         header {
             background-color: #1e293b;
-            padding: 1.5rem 2rem;
+            padding: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
@@ -35,9 +35,10 @@
         }
         
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #38bdf8;
+            z-index: 101;
         }
         
         .logo span {
@@ -60,6 +61,73 @@
             color: #38bdf8;
         }
         
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 70%;
+            height: 100vh;
+            background-color: #1e293b;
+            padding: 5rem 2rem 2rem;
+            transition: right 0.3s ease;
+            z-index: 100;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .mobile-menu a {
+            display: block;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .mobile-menu a:hover {
+            color: #38bdf8;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/api/placeholder/1200/400") center/cover no-repeat;
             height: 400px;
@@ -68,17 +136,17 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
         
         .hero h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
             color: #fff;
         }
         
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 700px;
             margin-bottom: 2rem;
             color: #cbd5e1;
@@ -111,13 +179,13 @@
         
         main {
             max-width: 1200px;
-            margin: 3rem auto;
-            padding: 0 2rem;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
         
         .section-title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
         }
@@ -125,17 +193,85 @@
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -8px;
             left: 0;
             width: 60%;
             height: 4px;
             background-color: #38bdf8;
         }
         
+        .category-tabs-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(90deg, transparent, #0f172a);
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2;
+        }
+        
+        .scroll-left {
+            left: 0;
+            background: linear-gradient(270deg, transparent, #0f172a);
+        }
+        
+        .scroll-right {
+            right: 0;
+            background: linear-gradient(90deg, transparent, #0f172a);
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .category-tab {
+            padding: 0.5rem 1.5rem;
+            background-color: #1e293b;
+            border-radius: 50px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.3s;
+        }
+        
+        .category-tab.active {
+            background-color: #38bdf8;
+            color: #0f172a;
+            font-weight: 600;
+        }
+        
+        .category-tab:hover:not(.active) {
+            background-color: #334155;
+        }
+        
         .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
         
         .movie-card {
@@ -153,11 +289,15 @@
         
         .movie-thumbnail {
             position: relative;
-            height: 350px;
+            height: 0;
+            padding-bottom: 150%; /* 2:3 aspect ratio */
             overflow: hidden;
         }
         
         .movie-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -169,11 +309,11 @@
         }
         
         .movie-info {
-            padding: 1.5rem;
+            padding: 1.25rem;
         }
         
         .movie-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
@@ -199,55 +339,30 @@
             text-decoration: none;
             font-weight: 500;
             transition: background-color 0.3s;
+            width: 100%;
+            text-align: center;
         }
         
         .watch-btn:hover {
             background-color: #e11d48;
         }
         
-        .category-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-        }
-        
-        .category-tab {
-            padding: 0.5rem 1.5rem;
-            background-color: #1e293b;
-            border-radius: 50px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: background-color 0.3s;
-        }
-        
-        .category-tab.active {
-            background-color: #38bdf8;
-            color: #0f172a;
-            font-weight: 600;
-        }
-        
-        .category-tab:hover:not(.active) {
-            background-color: #334155;
-        }
-        
         .newsletter {
             background-color: #1e293b;
-            padding: 3rem 2rem;
-            margin: 4rem 0;
+            padding: 2rem 1.5rem;
+            margin: 3rem 0;
             border-radius: 8px;
             text-align: center;
         }
         
         .newsletter h2 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
         }
         
         .newsletter p {
             color: #94a3b8;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
@@ -257,6 +372,7 @@
             display: flex;
             max-width: 500px;
             margin: 0 auto;
+            flex-direction: row;
         }
         
         .newsletter-form input {
@@ -265,6 +381,7 @@
             border: none;
             border-radius: 4px 0 0 4px;
             outline: none;
+            min-width: 0;
         }
         
         .newsletter-form button {
@@ -275,24 +392,25 @@
             border-radius: 0 4px 4px 0;
             cursor: pointer;
             font-weight: 600;
+            white-space: nowrap;
         }
         
         footer {
             background-color: #1e293b;
-            padding: 3rem 2rem;
+            padding: 2rem 1rem;
         }
         
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 2rem;
         }
         
         .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
             position: relative;
             display: inline-block;
         }
@@ -327,27 +445,154 @@
         
         .copyright {
             text-align: center;
-            padding-top: 2rem;
-            margin-top: 2rem;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
             border-top: 1px solid #334155;
             color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .load-more {
+            display: block;
+            background-color: transparent;
+            border: 2px solid #38bdf8;
+            color: #38bdf8;
+            padding: 0.8rem;
+            border-radius: 4px;
+            text-align: center;
+            margin: 2rem auto 0;
+            width: 200px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .load-more:hover {
+            background-color: #38bdf8;
+            color: #0f172a;
+        }
+        
+        @media (max-width: 1024px) {
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            }
         }
         
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            
             .menu {
                 display: none;
             }
             
+            .hamburger {
+                display: flex;
+            }
+            
+            .hero {
+                height: 350px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
             .movie-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+            
+            .movie-info {
+                padding: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .newsletter h2 {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                height: 300px;
+                padding: 0 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .search-bar {
+                flex-direction: row;
+            }
+            
+            .search-bar input {
+                font-size: 0.9rem;
+            }
+            
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 1rem;
+            }
+            
+            .movie-title {
+                font-size: 1rem;
+            }
+            
+            .movie-desc {
+                font-size: 0.8rem;
+            }
+            
+            .watch-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .newsletter {
+                padding: 1.5rem 1rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-form input {
+                border-radius: 4px;
+                margin-bottom: 0.8rem;
+            }
+            
+            .newsletter-form button {
+                border-radius: 4px;
+                padding: 0.8rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 380px) {
+            .movie-grid {
+                grid-template-columns: 1fr;
             }
             
             .movie-thumbnail {
-                height: 280px;
+                padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            }
+            
+            .category-tab {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -363,12 +608,27 @@
                 <a href="#">Reviews</a>
                 <a href="#">About</a>
             </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </nav>
     </header>
 
+    <div class="mobile-menu">
+        <a href="#">Home</a>
+        <a href="#">Movies</a>
+        <a href="#">TV Shows</a>
+        <a href="#">Reviews</a>
+        <a href="#">About</a>
+    </div>
+    
+    <div class="overlay" onclick="toggleMenu()"></div>
+
     <section class="hero">
         <h1>Discover Amazing Movies</h1>
-        <p>Explore the latest blockbusters, timeless classics, and hidden gems. Your ultimate destination for movie reviews, recommendations, and watchlists.</p>
+        <p>Explore the latest blockbusters, timeless classics, and hidden gems. Your ultimate destination for movie reviews and recommendations.</p>
         <div class="search-bar">
             <input type="text" placeholder="Search for movies...">
             <button>Search</button>
@@ -378,113 +638,117 @@
     <main>
         <h2 class="section-title">Trending Now</h2>
         
-        <div class="category-tabs">
-            <div class="category-tab active">All</div>
-            <div class="category-tab">Action</div>
-            <div class="category-tab">Drama</div>
-            <div class="category-tab">Comedy</div>
-            <div class="category-tab">Sci-Fi</div>
-            <div class="category-tab">Horror</div>
-            <div class="category-tab">Animation</div>
+        <div class="category-tabs-container">
+            <div class="category-tabs">
+                <div class="category-tab active">All</div>
+                <div class="category-tab">Action</div>
+                <div class="category-tab">Drama</div>
+                <div class="category-tab">Comedy</div>
+                <div class="category-tab">Sci-Fi</div>
+                <div class="category-tab">Horror</div>
+                <div class="category-tab">Animation</div>
+            </div>
         </div>
         
         <div class="movie-grid">
             <div class="movie-card">
                 <div class="movie-thumbnail">
-                    <img src="/api/placeholder/300/350" alt="Dune: Prophecy">
+                    <img src="/api/placeholder/300/450" alt="Dune: Prophecy">
                 </div>
                 <div class="movie-info">
                     <h3 class="movie-title">Dune: Prophecy</h3>
-                    <p class="movie-desc">Set 10,000 years before the ascension of Paul Atreides, this epic sci-fi adventure follows the Bene Gesserit as they navigate political intrigue and ancient powers.</p>
+                    <p class="movie-desc">Set 10,000 years before Paul Atreides, this epic sci-fi adventure follows the Bene Gesserit through political intrigue and ancient powers.</p>
                     <a href="#" class="watch-btn">Watch Now</a>
                 </div>
             </div>
             
             <div class="movie-card">
                 <div class="movie-thumbnail">
-                    <img src="/api/placeholder/300/350" alt="Eternal Shadows">
+                    <img src="/api/placeholder/300/450" alt="Eternal Shadows">
                 </div>
                 <div class="movie-info">
                     <h3 class="movie-title">Eternal Shadows</h3>
-                    <p class="movie-desc">A brilliant detective with a mysterious past must confront his own demons while hunting a serial killer who only strikes during solar eclipses.</p>
+                    <p class="movie-desc">A brilliant detective with a mysterious past must confront his own demons while hunting a serial killer who strikes during eclipses.</p>
                     <a href="#" class="watch-btn">Watch Now</a>
                 </div>
             </div>
             
             <div class="movie-card">
                 <div class="movie-thumbnail">
-                    <img src="/api/placeholder/300/350" alt="Parallel Hearts">
+                    <img src="/api/placeholder/300/450" alt="Parallel Hearts">
                 </div>
                 <div class="movie-info">
                     <h3 class="movie-title">Parallel Hearts</h3>
-                    <p class="movie-desc">Two strangers discover they can communicate across parallel universes, falling in love while trying to prevent a catastrophe that threatens both their worlds.</p>
+                    <p class="movie-desc">Two strangers discover they can communicate across parallel universes, falling in love while trying to prevent a catastrophe.</p>
                     <a href="#" class="watch-btn">Watch Now</a>
                 </div>
             </div>
             
             <div class="movie-card">
                 <div class="movie-thumbnail">
-                    <img src="/api/placeholder/300/350" alt="The Last Guardian">
+                    <img src="/api/placeholder/300/450" alt="The Last Guardian">
                 </div>
                 <div class="movie-info">
                     <h3 class="movie-title">The Last Guardian</h3>
-                    <p class="movie-desc">In a post-apocalyptic world, a young girl and her genetically modified companion animal must journey across dangerous territory to find the last safe haven on Earth.</p>
+                    <p class="movie-desc">In a post-apocalyptic world, a girl and her genetically modified companion must journey to find the last safe haven on Earth.</p>
                     <a href="#" class="watch-btn">Watch Now</a>
                 </div>
             </div>
             
             <div class="movie-card">
                 <div class="movie-thumbnail">
-                    <img src="/api/placeholder/300/350" alt="Midnight Orchestra">
+                    <img src="/api/placeholder/300/450" alt="Midnight Orchestra">
                 </div>
                 <div class="movie-info">
                     <h3 class="movie-title">Midnight Orchestra</h3>
-                    <p class="movie-desc">A struggling musician discovers a hidden underground club where playing certain melodies can alter reality, but each performance comes with an unforeseen consequence.</p>
+                    <p class="movie-desc">A struggling musician discovers a hidden club where playing certain melodies can alter reality, but each performance has a consequence.</p>
                     <a href="#" class="watch-btn">Watch Now</a>
                 </div>
             </div>
             
             <div class="movie-card">
                 <div class="movie-thumbnail">
-                    <img src="/api/placeholder/300/350" alt="Quantum Heist">
+                    <img src="/api/placeholder/300/450" alt="Quantum Heist">
                 </div>
                 <div class="movie-info">
                     <h3 class="movie-title">Quantum Heist</h3>
-                    <p class="movie-desc">A team of elite thieves must pull off the impossible: stealing a quantum computer that can predict the future, all while being hunted by international intelligence agencies.</p>
+                    <p class="movie-desc">A team of elite thieves must steal a quantum computer that can predict the future while being hunted by intelligence agencies.</p>
                     <a href="#" class="watch-btn">Watch Now</a>
                 </div>
             </div>
             
             <div class="movie-card">
                 <div class="movie-thumbnail">
-                    <img src="/api/placeholder/300/350" alt="The Forgotten Kingdom">
+                    <img src="/api/placeholder/300/450" alt="The Forgotten Kingdom">
                 </div>
                 <div class="movie-info">
                     <h3 class="movie-title">The Forgotten Kingdom</h3>
-                    <p class="movie-desc">An archaeologist uncovers an ancient civilization with technology far beyond our own, triggering a race against time as powerful forces seek to control its secrets.</p>
+                    <p class="movie-desc">An archaeologist uncovers an ancient civilization with advanced technology, triggering a race as powerful forces seek its secrets.</p>
                     <a href="#" class="watch-btn">Watch Now</a>
                 </div>
             </div>
             
             <div class="movie-card">
                 <div class="movie-thumbnail">
-                    <img src="/api/placeholder/300/350" alt="Elysium Dawn">
+                    <img src="/api/placeholder/300/450" alt="Elysium Dawn">
                 </div>
                 <div class="movie-info">
                     <h3 class="movie-title">Elysium Dawn</h3>
-                    <p class="movie-desc">The first human colony on a distant planet faces extinction when mysterious phenomena begin affecting the colonists' minds, blurring the line between reality and hallucination.</p>
+                    <p class="movie-desc">The first human colony on a distant planet faces extinction when mysterious phenomena begin affecting the colonists' minds.</p>
                     <a href="#" class="watch-btn">Watch Now</a>
                 </div>
             </div>
         </div>
         
+        <button class="load-more">Load More</button>
+        
         <section class="newsletter">
-            <h2>Stay Updated with the Latest Releases</h2>
+            <h2>Stay Updated with Latest Releases</h2>
             <p>Subscribe to our newsletter and never miss out on new movies, exclusive content, and special recommendations tailored just for you.</p>
-            <div class="newsletter-form">
-                <input type="email" placeholder="Enter your email address">
-                <button>Subscribe</button>
-            </div>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email">
+                <button type="submit">Subscribe</button>
+            </form>
         </section>
     </main>
     
@@ -518,7 +782,6 @@
                     <li><a href="#">Top Rated</a></li>
                     <li><a href="#">Coming Soon</a></li>
                     <li><a href="#">Movie News</a></li>
-                    <li><a href="#">Interviews</a></li>
                 </ul>
             </div>
             
@@ -537,5 +800,46 @@
             <p>&copy; 2025 CineShow. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const overlay = document.querySelector('.overlay');
+            const hamburger = document.querySelector('.hamburger');
+            
+            mobileMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Toggle hamburger animation
+            const spans = hamburger.querySelectorAll('span');
+            if (mobileMenu.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        }
+        
+        // Make category tabs interactive
+        const tabs = document.querySelectorAll('.category-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+        
+        // Simulate loading more movies
+        const loadMore = document.querySelector('.load-more');
+        loadMore.addEventListener('click', function() {
+            this.textContent = 'Loading...';
+            setTimeout(() => {
+                this.textContent = 'Load More';
+            }, 1500);
+        });
+    </script>
 </body>
 </html>
